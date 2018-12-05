@@ -4,7 +4,7 @@ import math
 from spectrum import spectrum
 
 #First let's check to see if there exist data in the spectrum file
-spectrum_file="spec-xxxx-xxxxx-xxxx.fits"
+spectrum_file="sdss.spec-xxxx-xxxxx-xxxx.fits"
 
 def test_read_flux():
   flux=Spectrum("spectrum_file")
