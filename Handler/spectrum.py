@@ -6,11 +6,23 @@ import os
 from matplotlib import pyplot as plt
 import numpy as np
 
-# hdu_info = fits.open("spec-10000-57346-0007.fits")
-# t1 = Table.read("spec-10000-57346-0007.fits", hdu=1)
-# print(t2['OBJTYPE'].data)
-# print(t2['CLASS'].data)
-# print(t2['SUBCLASS'].data)
+class Redshift(object):
+
+	def __init__(self, z):
+		self.H_0 = 67.77*((u.km/u.s)/u.Mpc)
+		self.z=z
+	
+	@property
+	def velocity(self):
+		velocity = self.z*const.c
+		return velocity
+	
+	@property
+	def distance(self):
+		distance = self.velocity/self.H_0
+		distance = distance.decompose()
+		distance = distance.to(u.kpc)
+		return distance
 
 
 class Spectrum(object):
@@ -40,9 +52,7 @@ class Spectrum(object):
 		t = Table.read(self.filepath, hdu=2)
 		dec = t['PLUG_DEC'].data[0]
 		return dec
-	
-	#@property num_hdus(self):
-	
+		
 	@property 
 	def min_lambda(self):
 		t = Table.read(self.filepath, hdu=2)
@@ -55,13 +65,19 @@ class Spectrum(object):
 		max = t['WAVEMAX'].data[0]
 		return max
 	
+	@property
+	def redshift(self):
+		t = Table.read(self.filepath, hdu=2)
+		redshift = Redshift(t['Z'].data[0])
+		return redshift
+		
 	def display_headers(self, header_num):
 		t = Table.read(self.filepath, hdu=header_num)
 		print(t)
 		
 	def display_info(self):
 		hdu = fits.open(self.filepath)
-		print(hdu.info())
+		return hdu.info()
 		
 	def plot_spectrum(self, show):
 		plt.rc('text', usetex=True)
@@ -73,43 +89,9 @@ class Spectrum(object):
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
 			plt.show()
-		
+	
 	
 spec = Spectrum("spec-10000-57346-0007.fits")
-print(spec.display_info())	
+print(spec.redshift.distance)
 
-class Redshift(object):
 
-	def __init__(self):
-		
-		self.z = t2['Z'].data
-		self.H_0 = 67.77*((u.km/u.s)/u.Mpc)
-		self.v = t2['Z'].data*const.c
-
-	def red_shift(self):
-		
-		return self.z[0]
-
-	def velocity(self):
-
-		vel = self.v
-		vel = vel[0]
-		vel = vel.to(u.km/u.s)
-
-		return vel
-
-	def distance(self):
-
-		distance = self.v/self.H_0
-		distance = distance.decompose()
-		distance = distance.to(u.kpc)
-
-		return distance[0]
-
-r = Redshift()
-print(r.H_0)
-print("Redshift " + str(r.red_shift()))
-#print(r.velocity)
-print("Distance " + str(r.distance()))
-
-print("Velocity " + str(r.velocity()))
