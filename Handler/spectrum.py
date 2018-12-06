@@ -1,5 +1,7 @@
 from astropy.io import fits
 from astropy.table import Table
+from astropy import units as u
+from astropy import constants as const
 import os
 from matplotlib import pyplot as plt
 import numpy as np
@@ -67,10 +69,12 @@ class Spectrum(object):
 		
 	
 spec = Spectrum("spec-10000-57346-0007.fits")
-#print(spec.ra)
+print(spec.display_headers(1))
+print(spec.ra)
+print(spec.dec)
 #spec.display_headers(1)
 #spec.display_info()	
-spec.plot_spectrum(show=1)
+#spec.plot_spectrum(show=1)
 
 t2 = Table.read("spec-10000-57346-0007.fits", hdu=2)
 class Redshift(object):
