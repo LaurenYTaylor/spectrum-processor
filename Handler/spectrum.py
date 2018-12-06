@@ -16,13 +16,6 @@ import numpy as np
 class Spectrum(object):
 	def __init__(self, filepath):
 		self.filepath = filepath
-		#self.targeted = None
-		#self.obs_date = None
-		#self.z = None
-		#self.distance = None
-		#self.max_flux = None
-		#self.obj_class = None
-		#self.obj_subclass = None
 	
 	@property
 	def flux(self):
@@ -48,6 +41,20 @@ class Spectrum(object):
 		dec = t['PLUG_DEC'].data[0]
 		return dec
 	
+	#@property num_hdus(self):
+	
+	@property 
+	def min_lambda(self):
+		t = Table.read(self.filepath, hdu=2)
+		min = t['WAVEMIN'].data[0]
+		return min
+	
+	@property 
+	def max_lambda(self):
+		t = Table.read(self.filepath, hdu=2)
+		max = t['WAVEMAX'].data[0]
+		return max
+	
 	def display_headers(self, header_num):
 		t = Table.read(self.filepath, hdu=header_num)
 		print(t)
@@ -69,14 +76,8 @@ class Spectrum(object):
 		
 	
 spec = Spectrum("spec-10000-57346-0007.fits")
-print(spec.display_headers(1))
-print(spec.ra)
-print(spec.dec)
-#spec.display_headers(1)
-#spec.display_info()	
-#spec.plot_spectrum(show=1)
+print(spec.display_info())	
 
-t2 = Table.read("spec-10000-57346-0007.fits", hdu=2)
 class Redshift(object):
 
 	def __init__(self):
