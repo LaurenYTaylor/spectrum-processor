@@ -1,7 +1,7 @@
 """Unit testing to confirm that our data is correct"""
 
 import numpy as np
-from ..Spectrum import spectrum
+from Spectrum import spectrum
 
 #First let's check to see if there exist data in the spectrum file
 spectrum_file=fits.open("spec-3586-55181-0042.fits")
