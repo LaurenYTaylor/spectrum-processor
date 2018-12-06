@@ -6,10 +6,6 @@ import numpy as np
 
 # hdu_info = fits.open("spec-10000-57346-0007.fits")
 # t1 = Table.read("spec-10000-57346-0007.fits", hdu=1)
-# t2 = Table.read("spec-10000-57346-0007.fits", hdu=2)
-
-# print(t2['PLUG_RA'].data)
-# print(t2['PLUG_DEC'].data)
 # print(t2['OBJTYPE'].data)
 # print(t2['CLASS'].data)
 # print(t2['SUBCLASS'].data)
@@ -75,3 +71,4 @@ spec = Spectrum("spec-10000-57346-0007.fits")
 #spec.display_headers(1)
 #spec.display_info()	
 spec.plot_spectrum(show=1)
+print(np.sum(spec.flux))
