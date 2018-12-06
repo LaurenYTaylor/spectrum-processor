@@ -11,6 +11,9 @@ def spectrum_read():
 	global spec;
 	spec=Spectrum(spectrum_file)
   #assert len(spec.hdu.list)==3, "I spy with my little eye something beginning with D"
+
+spectrum_read()
+  
   
 spectrum_read()
   
@@ -20,6 +23,7 @@ spectrum_read()
 def test_flux_one():
   flux1=spec.flux[0]
   np.testing.assert_approx_equal(flux1,  2.10858, significant=6), "ya yeet"
+
   
 #Better to be safe than sorry
 def test_flux_two():
@@ -44,6 +48,8 @@ def test_ra_one():
 def test_dec_one():
       dec1=spec.dec
       np.testing.assert_approx_equal(dec1, 26.935936), "ya yeet"
+
+      
       
       
  
