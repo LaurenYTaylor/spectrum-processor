@@ -75,3 +75,40 @@ spec = Spectrum("spec-10000-57346-0007.fits")
 #spec.display_headers(1)
 #spec.display_info()	
 spec.plot_spectrum(show=1)
+
+t2 = Table.read("spec-10000-57346-0007.fits", hdu=2)
+class Redshift(object):
+
+	def __init__(self):
+		
+		self.z = t2['Z'].data
+		self.H_0 = 67.77*((u.km/u.s)/u.Mpc)
+		self.v = t2['Z'].data*const.c
+
+	def red_shift(self):
+		
+		return self.z[0]
+
+	def velocity(self):
+
+		vel = self.v
+		vel = vel[0]
+		vel = vel.to(u.km/u.s)
+
+		return vel
+
+	def distance(self):
+
+		distance = self.v/self.H_0
+		distance = distance.decompose()
+		distance = distance.to(u.kpc)
+
+		return distance[0]
+
+r = Redshift()
+print(r.H_0)
+print("Redshift " + str(r.red_shift()))
+#print(r.velocity)
+print("Distance " + str(r.distance()))
+
+print("Velocity " + str(r.velocity()))
