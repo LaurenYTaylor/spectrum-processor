@@ -58,7 +58,20 @@ class Spectrum(object):
 		hdu = fits.open(self.filepath)
 		print(hdu.info())
 		
+	def plot_spectrum(self, show):
+		plt.rc('text', usetex=True)
+		plt.plot(self.loglam, self.flux)
+		plt.xlabel(r"Log $\lambda$") 
+		plt.ylabel(r"Flux $\frac{erg.\AA}{s.cm^2}$")
+		if not os.path.isdir("Plots"):
+			os.mkdir('Plots')
+		plt.savefig("Plots/"+self.filepath[:-5]+".png")
+		if(show==1 or show==True):
+			plt.show()
+		
 	
 spec = Spectrum("spec-10000-57346-0007.fits")
-print(spec.ra)
-	
+#print(spec.ra)
+#spec.display_headers(1)
+#spec.display_info()	
+spec.plot_spectrum(show=1)
