@@ -16,23 +16,29 @@ def spectrum_read():
 #Flux testing
 def test_flux_one():
   #Tests to see if flux at [...] is True for x=....16.0137
-  flux1=flux.spec[0]
-  np.testing.assert_approx_equal(s.flux,16.0137)
+  flux1=spec.flux[0]
+  np.testing.assert_approx_equal(flux1=6.0137)
   
 #Better to be safe than sorry
 def test_flux_two():
-    flux2=flux.spec[1]
-    np.testing.assert_approx_equal(s.flux,xxx)
+    flux2=spec.flux[1]
+    np.testing.assert_approx_equal(flux2,xxx)
 
- #Lambda testing
+#Lambda testing
 def test_lambda_one():
-      lambda1=loglam.spec[0]
-      np.testing.assert_approx_equal(s.loglam,xxx)
+      lambda1=spec.loglam[0]
+      np.testing.assert_approx_equal(lambda1,xxx)
         
 def test_lambda_two():
-      lambda2=loglam.spec[1]
-      np.testing.assert_approx_equal(s.loglam,xxx)
+      lambda2=spec.loglam[1]
+      np.testing.assert_approx_equal(lambda2,xxx)
       
-
-   
+#Ra test   
+def test_ra_one():
+      ra1=spec.ra[0]
+      np.testing.assert_approx_equal(ra1,xxx)
+      
+def test_ra_two():
+      ra2=spec.ra[1]
+      np.testing.assert_approx_equal(ra2,xxx)
     
