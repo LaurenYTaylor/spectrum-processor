@@ -13,8 +13,20 @@ spectrum = Spectrum(spectrum_file)
 redshift = spectrum.redshift.z
 velocity = spectrum.redshift.velocity
 distance = spectrum.redshift.distance
+print("\n")
 print(f"Redshift: {redshift}")
+print("\n")
 print(f"Velocity (from redshift): {velocity}")
+print("\n")
 print(f"Distance (from redshift): {distance}")
+print("\n")
+print("\n------------------\nLuminosity\n------------------")
+for l in spectrum.luminosity[:5]:
+	print(l)
+print("\n----\nInfo\n----")
+print(spectrum.display_info())
 
-print(spectrum.luminosity)
+print("\n---------\nHeader 1\n---------")
+print(spectrum.display_headers(1))
+
+spectrum.plot_spectrum(show=True, plotlines=6000)
