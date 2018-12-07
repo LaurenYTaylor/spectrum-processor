@@ -25,7 +25,7 @@ class Redshift(object):
 		return distance
 
 
->>>>>>> 6e0e76d18a4780b1e8371e2809cb7181e8c4bcab
+
 class Geometry(object):
 	
 	def __init__(self, r):
@@ -49,7 +49,6 @@ class Luminosity(object):
 		luminos = self.flux*g.area()
 		luminos = luminos.decompose()
 		return luminos
-
 
 class Spectrum(object):
 	def __init__(self, filepath):
@@ -101,7 +100,13 @@ class Spectrum(object):
 	def luminosity(self):
 		lum = Luminosity(self.flux, self.redshift.distance)
 		return lum.luminosity
-		
+	
+	@property 
+	def object_type(self):
+		t = Table.read(self.filepath, hdu=2)
+		object_type = t['CLASS'].data[0]
+		return object_type
+	
 	def display_headers(self, header_num):
 		t = Table.read(self.filepath, hdu=header_num)
 		print(t)
@@ -117,21 +122,35 @@ class Spectrum(object):
 		if plotlines == None:
 			pass
 		elif plotlines == 'all':
-			SpectralLines(self.filepath).plot_all_lines(ax)
+			lines = SpectralLines(self.filepath)
+			lines.plot_all_lines(ax)
+			w, n = lines.get_all_lines()
+			testw = np.log10(w)
+			print("\n---------------\nPlotting lines:\n---------------")
+			for i in range(len(w)):
+				if np.log10(self.min_lambda) < testw[i] < np.log10(self.max_lambda):
+					print(f"{n[i]}: {w[i]:.2f} angstroms")
 		else:
-			SpectralLines(self.filepath).plot_some_lines(ax, plotlines)
+			lines = SpectralLines(self.filepath)
+			lines.plot_some_lines(ax, plotlines)
+			w, n = lines.get_lines(plotlines)
+			testw = np.log10(w)
+			print("\n---------------\nPlotting lines:\n---------------")
+			for i in range(len(w)):
+				if np.log10(self.min_lambda) < testw[i] < np.log10(self.max_lambda):
+					print(f"{n[i]}: {w[i]:.2f} angstroms")
 
 		plt.rc('text', usetex=True)
 		plt.plot(self.loglam, self.flux, 'k-', lw=0.5)
 		plt.xlim(np.log10(self.min_lambda), np.log10(self.max_lambda))
 		plt.xlabel(r"Log $\lambda$") 
 		plt.ylabel(r"Flux $\frac{erg.\AA}{s.cm^2}$")
+		plt.title("Flux vs. Log Wavelength")
 		if not os.path.isdir("Plots"):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
 
-			plt.show()
 
 
 class SpectralLines(object):
@@ -149,7 +168,8 @@ class SpectralLines(object):
 		t = Table.read(self.filepath, hdu=3)
 		names = []
 		for i, val in enumerate(t['LINENAME'].data):
-			names.append(val.decode("utf-8"))
+			#names.append(val.decode("utf-8"))
+			names.append(val)
 		return names
 
 	@property
@@ -185,7 +205,7 @@ class SpectralLines(object):
 		return wavelengths, names
 
 	def get_all_lines(self):
-		return self.wavelengths, self.linenames
+		return self.lines, self.linenames
 
 	def plot_some_lines(self, ax, lams):
 		if isinstance(lams, int):
@@ -197,6 +217,7 @@ class SpectralLines(object):
 
 	def plot_all_lines(self, ax):
 		lines = self.to_log(self.lines)
+
 		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
 
 
@@ -218,4 +239,7 @@ spec = Spectrum(fpath)
 #print(spec.ra)
 #spec.display_headers(1)
 #spec.display_info()
+
+
+		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
 
