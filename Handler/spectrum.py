@@ -217,17 +217,4 @@ class SpectralLines(object):
 
 	def plot_all_lines(self, ax):
 		lines = self.to_log(self.lines)
-
 		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
-
-
-def make_spectrum_plot(fpath, plotlines='all'):
-	fig, ax = plt.subplots(1)
-	if plotlines == None or plotlines == 0 or plotlines == False: # decide?!
-		pass
-	elif plotlines == 'all':
-		SpectralLines(fpath).plot_all_lines(ax)
-	else:
-		SpectralLines(fpath).plot_some_lines(ax, plotlines)
-	Spectrum(fpath).plot_spectrum(show=1)
-

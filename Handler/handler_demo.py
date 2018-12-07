@@ -31,5 +31,5 @@ for f in spectrum.flux[:5]:
 #print(spectrum.display_headers(1))
 
 #spectrum.plot_spectrum(show=True, plotlines=None) # for no lines
-spectrum.plot_spectrum(show=True, plotlines=[5578, 5877]) # the two lines in file "spec-10000-57346-0007.fits"
-#spectrum.plot_spectrum() # alternative to show default line plot; can also show plotlines=None
+#spectrum.plot_spectrum(show=True, plotlines=[5578, 5877]) # the two lines in file "spec-10000-57346-0007.fits"
+spectrum.plot_spectrum() # alternative to show default line plot; can also show plotlines=None
