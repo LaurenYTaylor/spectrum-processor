@@ -21,15 +21,17 @@ print(f"\n------------------------\nDistance (from redshift)\n------------------
 print("\n-----------\nLuminosity\n-----------")
 for l in spectrum.luminosity[:5]:
 	print(l)
-print("\n-----------\nFlux\n-----------")
-for f in spectrum.flux[:5]:
-	print(f)
-#print("\n----\nInfo\n----")
-#print(spectrum.display_info())
+print("\n----\nInfo\n----")
+print(spectrum.display_info())
 
-#print("\n---------\nHeader 1\n---------")
-#print(spectrum.display_headers(1))
+print("\n---------\nHeader 1\n---------")
+print(spectrum.display_headers(1))
 
+<<<<<<< HEAD
 #spectrum.plot_spectrum(show=True, plotlines=None) # for no lines
 #spectrum.plot_spectrum(show=True, plotlines=[5578, 5877]) # the two lines in file "spec-10000-57346-0007.fits"
 spectrum.plot_spectrum() # alternative to show default line plot; can also show plotlines=None
+=======
+# spectrum.plot_spectrum(show=True, plotlines=[5578, 5877]) # the two lines in file "spec-10000-57346-0007.fits"
+spectrum.plot_spectrum() # alternative to show default line plot; can also show plotlines=None
+>>>>>>> a7ec745e5bad002b6d651fe2c9ba784f563897d6

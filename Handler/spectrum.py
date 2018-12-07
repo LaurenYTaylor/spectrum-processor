@@ -129,7 +129,7 @@ class Spectrum(object):
 			print("\n---------------\nPlotting lines:\n---------------")
 			for i in range(len(w)):
 				if np.log10(self.min_lambda) < testw[i] < np.log10(self.max_lambda):
-					print(f"{n[i]}: {w[i]:.2f} angstroms")
+					print(f"{n[i]} {w[i]:.2f} angstroms: {np.log10(w[i]):.2f} log lambda")
 		else:
 			lines = SpectralLines(self.filepath)
 			lines.plot_some_lines(ax, plotlines)
@@ -138,7 +138,7 @@ class Spectrum(object):
 			print("\n---------------\nPlotting lines:\n---------------")
 			for i in range(len(w)):
 				if np.log10(self.min_lambda) < testw[i] < np.log10(self.max_lambda):
-					print(f"{n[i]}: {w[i]:.2f} angstroms")
+					print(f"{n[i]} {w[i]:.2f} angstroms: {np.log10(w[i]):.2f} long lambda")
 
 		plt.rc('text', usetex=True)
 		plt.plot(self.loglam, self.flux, 'k-', lw=0.5)
@@ -168,8 +168,7 @@ class SpectralLines(object):
 		t = Table.read(self.filepath, hdu=3)
 		names = []
 		for i, val in enumerate(t['LINENAME'].data):
-			#names.append(val.decode("utf-8"))
-			names.append(val)
+			names.append(val.decode("utf-8").strip('[] 0123456789'))
 		return names
 
 	@property
@@ -213,7 +212,7 @@ class SpectralLines(object):
 		w, n = self.get_lines(np.sort(lams))
 		lines = self.to_log(w)
 		c = np.array(self.colours)[np.where(np.isin(self.lines, w))]
-		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=c, linestyle='--')
+		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=c, linestyle='--', alpha=0.75)
 
 	def plot_all_lines(self, ax):
 		lines = self.to_log(self.lines)
