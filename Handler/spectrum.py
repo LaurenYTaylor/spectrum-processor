@@ -1,5 +1,5 @@
 from astropy.io import fits
-from astropy.table import Table
+from astropy.table import Table, Column
 from astropy import units as u
 from astropy import constants as const
 import os
@@ -23,6 +23,8 @@ class Redshift(object):
 		distance = distance.decompose()
 		distance = distance.to(u.kpc)
 		return distance
+
+
 
 class Geometry(object):
 	
@@ -148,7 +150,8 @@ class Spectrum(object):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
-			plt.show()
+
+
 
 class SpectralLines(object):
 
@@ -197,7 +200,8 @@ class SpectralLines(object):
 				wavelengths.append(temp_w)
 				names.append(temp_n)
 			except IndexError:
-				print(f"No spectral line on file within five angstroms either side of {lams[i]} angstroms")
+				a=0
+				#print(f"No spectral line on file within five angstroms either side of {lams[i]} angstroms")
 		return wavelengths, names
 
 	def get_all_lines(self):
@@ -213,4 +217,29 @@ class SpectralLines(object):
 
 	def plot_all_lines(self, ax):
 		lines = self.to_log(self.lines)
+
 		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
+
+
+def make_spectrum_plot(fpath, plotlines='all'):
+	fig, ax = plt.subplots(1)
+	if plotlines == None or plotlines == 0 or plotlines == False: # decide?!
+		pass
+	elif plotlines == 'all':
+		SpectralLines(fpath).plot_all_lines(ax)
+	else:
+		SpectralLines(fpath).plot_some_lines(ax, plotlines)
+	Spectrum(fpath).plot_spectrum(show=1)
+
+#fpath = filename
+#l = SpectralLines(fpath)
+
+
+spec = Spectrum(fpath)
+#print(spec.ra)
+#spec.display_headers(1)
+#spec.display_info()
+
+
+		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
+
