@@ -48,7 +48,6 @@ class Luminosity(object):
 		luminos = luminos.decompose()
 		return luminos
 
-
 class Spectrum(object):
 	def __init__(self, filepath):
 		self.filepath = filepath
@@ -115,9 +114,23 @@ class Spectrum(object):
 		if plotlines == None:
 			pass
 		elif plotlines == 'all':
-			SpectralLines(self.filepath).plot_all_lines(ax)
+			lines = SpectralLines(self.filepath)
+			lines.plot_all_lines(ax)
+			w, n = lines.get_all_lines()
+			testw = np.log10(w)
+			print("\n---------------\nPlotting lines:\n---------------")
+			for i in range(len(w)):
+				if np.log10(self.min_lambda) < testw[i] < np.log10(self.max_lambda):
+					print(f"{n[i]}: {w[i]:.2f} angstroms")
 		else:
-			SpectralLines(self.filepath).plot_some_lines(ax, plotlines)
+			lines = SpectralLines(self.filepath)
+			lines.plot_some_lines(ax, plotlines)
+			w, n = lines.get_lines(plotlines)
+			testw = np.log10(w)
+			print("\n---------------\nPlotting lines:\n---------------")
+			for i in range(len(w)):
+				if np.log10(self.min_lambda) < testw[i] < np.log10(self.max_lambda):
+					print(f"{n[i]}: {w[i]:.2f} angstroms")
 
 		plt.rc('text', usetex=True)
 		plt.plot(self.loglam, self.flux, 'k-', lw=0.5)
@@ -129,8 +142,6 @@ class Spectrum(object):
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
 			plt.show()
-
-
 
 class SpectralLines(object):
 
@@ -182,7 +193,7 @@ class SpectralLines(object):
 		return wavelengths, names
 
 	def get_all_lines(self):
-		return self.wavelengths, self.linenames
+		return self.lines, self.linenames
 
 	def plot_some_lines(self, ax, lams):
 		if isinstance(lams, int):
@@ -195,13 +206,3 @@ class SpectralLines(object):
 	def plot_all_lines(self, ax):
 		lines = self.to_log(self.lines)
 		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
-
-fpath = "spec-10000-57346-0007.fits"
-l = SpectralLines(fpath)
-
-spec = Spectrum(fpath)
-#print(spec.ra)
-#spec.display_headers(1)
-#spec.display_info()
-
-#spec.plot_spectrum()
