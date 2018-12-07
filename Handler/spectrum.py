@@ -98,7 +98,13 @@ class Spectrum(object):
 	def luminosity(self):
 		lum = Luminosity(self.flux, self.redshift.distance)
 		return lum.luminosity
-		
+	
+	@property 
+	def object_type(self):
+		t = Table.read(self.filepath, hdu=2)
+		object_type = t['CLASS'].data[0]
+		return object_type
+	
 	def display_headers(self, header_num):
 		t = Table.read(self.filepath, hdu=header_num)
 		print(t)
@@ -137,6 +143,7 @@ class Spectrum(object):
 		plt.xlim(np.log10(self.min_lambda), np.log10(self.max_lambda))
 		plt.xlabel(r"Log $\lambda$") 
 		plt.ylabel(r"Flux $\frac{erg.\AA}{s.cm^2}$")
+		plt.title("Flux vs. Log Wavelength")
 		if not os.path.isdir("Plots"):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
