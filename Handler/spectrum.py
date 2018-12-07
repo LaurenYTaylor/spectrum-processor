@@ -24,17 +24,6 @@ class Redshift(object):
 		distance = distance.to(u.kpc)
 		return distance
 
-# hdu_info = fits.open("spec-10000-57346-0007.fits")
-# t1 = Table.read("spec-10000-57346-0007.fits", hdu=1)
-# t2 = Table.read("spec-10000-57346-0007.fits", hdu=2)
-# t3 = Table.read("spec-10000-57346-0007.fits", hdu=3)
-
-# print(t2['PLUG_RA'].data)
-# print(t2['PLUG_DEC'].data)
-# print(t2['OBJTYPE'].data)
-# print(t2['CLASS'].data)
-# print(t2['SUBCLASS'].data)
-
 class Geometry(object):
 	
 	def __init__(self, r):
@@ -130,8 +119,6 @@ class Spectrum(object):
 		if(show==1 or show==True):
 			plt.show()	
 	
-spec = Spectrum("spec-10000-57346-0007.fits")
-print(spec.redshift.distance)
 
 
 class SpectralLines(object):
@@ -208,12 +195,4 @@ def make_spectrum_plot(fpath, plotlines='all'):
 		SpectralLines(fpath).plot_some_lines(ax, plotlines)
 	Spectrum(fpath).plot_spectrum(show=1)
 
-fpath = "spec-10000-57346-0007.fits"
-l = SpectralLines(fpath)
-
-# spec = Spectrum("spec-10000-57346-0007.fits")
-#print(spec.ra)
-#spec.display_headers(1)
-#spec.display_info()
-
-make_spectrum_plot(fpath)
+#make_spectrum_plot(fpath)
