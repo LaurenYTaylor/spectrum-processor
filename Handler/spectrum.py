@@ -24,19 +24,8 @@ class Redshift(object):
 		distance = distance.to(u.kpc)
 		return distance
 
-#filename = 'spec-4055-55359-0001.fits'
 
-# hdu_info = fits.open("spec-10000-57346-0007.fits")
-# t1 = Table.read("spec-10000-57346-0007.fits", hdu=1)
-# t2 = Table.read("spec-10000-57346-0007.fits", hdu=2)
-# t3 = Table.read("spec-10000-57346-0007.fits", hdu=3)
-
-# print(t2['PLUG_RA'].data)
-# print(t2['PLUG_DEC'].data)
-# print(t2['OBJTYPE'].data)
-# print(t2['CLASS'].data)
-# print(t2['SUBCLASS'].data)
-
+>>>>>>> 6e0e76d18a4780b1e8371e2809cb7181e8c4bcab
 class Geometry(object):
 	
 	def __init__(self, r):
@@ -50,21 +39,15 @@ class Geometry(object):
 
 class Luminosity(object):
 
-	def __init__(self,distance,filename):
-
-		self.filename = filename
-		self.t1 = Table.read(self.filename,hdu=1)
-		self.distance = distance
-		self.flux = self.t1['flux']*3.631E-6*u.Jy
-
+	def __init__(self, flux, distance):
+		self.flux=flux
+		self.distance=distance
+	
+	@property
 	def luminosity(self):
-
-		distance = self.distance
-		flux = self.flux
-		g = Geometry(distance)
-		luminos = flux*g.area()
+		g = Geometry(self.distance)
+		luminos = self.flux*g.area()
 		luminos = luminos.decompose()
-		luminos = Column(luminos, "L")
 		return luminos
 
 
@@ -113,6 +96,11 @@ class Spectrum(object):
 		t = Table.read(self.filepath, hdu=2)
 		redshift = Redshift(t['Z'].data[0])
 		return redshift
+	
+	@property
+	def luminosity(self):
+		lum = Luminosity(self.flux, self.redshift.distance)
+		return lum.luminosity
 		
 	def display_headers(self, header_num):
 		t = Table.read(self.filepath, hdu=header_num)
@@ -122,7 +110,17 @@ class Spectrum(object):
 		hdu = fits.open(self.filepath)
 		return hdu.info()
 		
-	def plot_spectrum(self, show):
+	def plot_spectrum(self, show=True, plotlines='all'):
+
+		fig, ax = plt.subplots(1)
+
+		if plotlines == None:
+			pass
+		elif plotlines == 'all':
+			SpectralLines(self.filepath).plot_all_lines(ax)
+		else:
+			SpectralLines(self.filepath).plot_some_lines(ax, plotlines)
+
 		plt.rc('text', usetex=True)
 		plt.plot(self.loglam, self.flux, 'k-', lw=0.5)
 		plt.xlim(np.log10(self.min_lambda), np.log10(self.max_lambda))
@@ -132,10 +130,8 @@ class Spectrum(object):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
-			plt.show()	
-	
-#spec = Spectrum(filename)
-#print(spec.redshift.distance)
+
+			plt.show()
 
 
 class SpectralLines(object):
@@ -203,6 +199,7 @@ class SpectralLines(object):
 		lines = self.to_log(self.lines)
 		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
 
+
 def make_spectrum_plot(fpath, plotlines='all'):
 	fig, ax = plt.subplots(1)
 	if plotlines == None or plotlines == 0 or plotlines == False: # decide?!
@@ -216,9 +213,9 @@ def make_spectrum_plot(fpath, plotlines='all'):
 #fpath = filename
 #l = SpectralLines(fpath)
 
-# spec = Spectrum("spec-10000-57346-0007.fits")
+
+spec = Spectrum(fpath)
 #print(spec.ra)
 #spec.display_headers(1)
 #spec.display_info()
 
-#make_spectrum_plot(fpath)
