@@ -35,6 +35,34 @@ class Redshift(object):
 # print(t2['CLASS'].data)
 # print(t2['SUBCLASS'].data)
 
+class Geometry(object):
+	
+	def __init__(self, r):
+		
+		self.r = r
+
+	def area(self):
+
+		area = 4*np.pi*self.r*self.r
+		return area
+
+class Luminosity(object):
+
+	def __init__(self):
+
+		self.t1 = Table.read('spec-10000-57346-0007.fits',hdu=1)
+		self.distance = r.distance
+		self.flux = self.t1['flux']*3.631E-6*u.Jy
+
+	def luminosity(self):
+
+		flux = self.flux
+		g = Geometry(r.distance())
+		luminos = flux*g.area()
+		luminos = luminos.decompose()
+		luminos = Column(luminos, "L")
+		return luminos
+
 
 class Spectrum(object):
 	def __init__(self, filepath):
