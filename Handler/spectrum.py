@@ -1,5 +1,5 @@
 from astropy.io import fits
-from astropy.table import Table
+from astropy.table import Table, Column
 from astropy import units as u
 from astropy import constants as const
 import os
@@ -23,6 +23,8 @@ class Redshift(object):
 		distance = distance.decompose()
 		distance = distance.to(u.kpc)
 		return distance
+
+
 
 class Geometry(object):
 	
@@ -150,6 +152,7 @@ class Spectrum(object):
 		if(show==1 or show==True):
 			plt.show()
 
+
 class SpectralLines(object):
 
 	def __init__(self, filepath):
@@ -196,7 +199,8 @@ class SpectralLines(object):
 				wavelengths.append(temp_w)
 				names.append(temp_n)
 			except IndexError:
-				print(f"No spectral line on file within five angstroms either side of {lams[i]} angstroms")
+				a=0
+				#print(f"No spectral line on file within five angstroms either side of {lams[i]} angstroms")
 		return wavelengths, names
 
 	def get_all_lines(self):
@@ -212,4 +216,5 @@ class SpectralLines(object):
 
 	def plot_all_lines(self, ax):
 		lines = self.to_log(self.lines)
-		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--', alpha=0.75)
+
+		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')

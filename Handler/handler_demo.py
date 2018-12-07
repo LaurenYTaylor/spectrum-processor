@@ -13,14 +13,11 @@ spectrum = Spectrum(spectrum_file)
 redshift = spectrum.redshift.z
 velocity = spectrum.redshift.velocity
 distance = spectrum.redshift.distance
-print("\n")
-print(f"Redshift: {redshift}")
-print("\n")
-print(f"Velocity (from redshift): {velocity}")
-print("\n")
-print(f"Distance (from redshift): {distance}")
-print("\n")
-print("\n------------------\nLuminosity\n------------------")
+print(f"\n-------------\nObject Type\n-------------\n{object_type}")
+print(f"\n--------\nRedshift\n--------\n{redshift}")
+print(f"\n------------------------\nVelocity (from redshift)\n------------------------\n{velocity}")
+print(f"\n------------------------\nDistance (from redshift)\n------------------------\n{distance}")
+print("\n-----------\nLuminosity\n-----------")
 for l in spectrum.luminosity[:5]:
 	print(l)
 print("\n----\nInfo\n----")
