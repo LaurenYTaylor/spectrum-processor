@@ -150,7 +150,7 @@ class Spectrum(object):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
-
+			plt.show()
 
 
 class SpectralLines(object):
@@ -230,16 +230,4 @@ def make_spectrum_plot(fpath, plotlines='all'):
 	else:
 		SpectralLines(fpath).plot_some_lines(ax, plotlines)
 	Spectrum(fpath).plot_spectrum(show=1)
-
-#fpath = filename
-#l = SpectralLines(fpath)
-
-
-spec = Spectrum(fpath)
-#print(spec.ra)
-#spec.display_headers(1)
-#spec.display_info()
-
-
-		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
 
