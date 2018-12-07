@@ -10,6 +10,7 @@ spectrum_file = args.filename
 
 spectrum = Spectrum(spectrum_file)
 
+object_type = spectrum.object_type
 redshift = spectrum.redshift.z
 velocity = spectrum.redshift.velocity
 distance = spectrum.redshift.distance
