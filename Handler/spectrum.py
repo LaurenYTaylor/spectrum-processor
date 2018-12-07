@@ -107,7 +107,17 @@ class Spectrum(object):
 		hdu = fits.open(self.filepath)
 		return hdu.info()
 		
-	def plot_spectrum(self, show):
+	def plot_spectrum(self, show=True, plotlines='all'):
+
+		fig, ax = plt.subplots(1)
+
+		if plotlines == None:
+			pass
+		elif plotlines == 'all':
+			SpectralLines(self.filepath).plot_all_lines(ax)
+		else:
+			SpectralLines(self.filepath).plot_some_lines(ax, plotlines)
+
 		plt.rc('text', usetex=True)
 		plt.plot(self.loglam, self.flux, 'k-', lw=0.5)
 		plt.xlim(np.log10(self.min_lambda), np.log10(self.max_lambda))
@@ -117,8 +127,8 @@ class Spectrum(object):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
 		if(show==1 or show==True):
-			plt.show()	
-	
+			plt.show()
+
 
 
 class SpectralLines(object):
@@ -185,14 +195,12 @@ class SpectralLines(object):
 		lines = self.to_log(self.lines)
 		plt.vlines(lines, 0, 1, transform=ax.get_xaxis_transform(), colors=self.colours, linestyle='--')
 
-def make_spectrum_plot(fpath, plotlines='all'):
-	fig, ax = plt.subplots(1)
-	if plotlines == None or plotlines == 0 or plotlines == False: # decide?!
-		pass
-	elif plotlines == 'all':
-		SpectralLines(fpath).plot_all_lines(ax)
-	else:
-		SpectralLines(fpath).plot_some_lines(ax, plotlines)
-	Spectrum(fpath).plot_spectrum(show=1)
+fpath = "spec-10000-57346-0007.fits"
+l = SpectralLines(fpath)
 
-#make_spectrum_plot(fpath)
+spec = Spectrum(fpath)
+#print(spec.ra)
+#spec.display_headers(1)
+#spec.display_info()
+
+spec.plot_spectrum()
