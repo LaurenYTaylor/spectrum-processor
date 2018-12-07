@@ -213,18 +213,12 @@ def make_spectrum_plot(fpath, plotlines='all'):
 		pass
 	elif plotlines == 'all':
 		SpectralLines(fpath).plot_all_lines(ax)
-	else: # work in progress!!
+	else:
 		SpectralLines(fpath).plot_some_lines(ax, plotlines)
 	Spectrum(fpath).plot_spectrum(show=1)
 
 fpath = "spec-10000-57346-0007.fits"
 l = SpectralLines(fpath)
-# y, z = l.get_all_lines()
-# print(z)
-# lams, names = l.get_lines([1215,1240])
-# print(lams, names)
-# lam, name = l.get_one_line(1215)
-# print(f"{lam} {name}")
 
 # spec = Spectrum("spec-10000-57346-0007.fits")
 #print(spec.ra)
