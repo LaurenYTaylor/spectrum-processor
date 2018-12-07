@@ -3,7 +3,7 @@ from spectrum import Spectrum
 parser = argparse.ArgumentParser(description="A script to demonstrate an SDSS spectrum fits file handler.",\
 								usage="handler_demo.py --filename spec-xxxx-xxxxx-xxxx.fits")
 
-parser.add_argument("-f", "--filename", help="The spectrum fits file to read.", default=10)
+parser.add_argument("-f", "--filename", help="The spectrum fits file to read.", default=10, required=True)
 args = parser.parse_args()
 
 spectrum_file = args.filename
@@ -29,4 +29,5 @@ print(spectrum.display_info())
 print("\n---------\nHeader 1\n---------")
 print(spectrum.display_headers(1))
 
-spectrum.plot_spectrum(show=True, plotlines=6000)
+# spectrum.plot_spectrum(show=True, plotlines=[5578, 5877]) # the two lines in file "spec-10000-57346-0007.fits"
+spectrum.plot_spectrum() # alternative to show default line plot; can also show plotlines=None
