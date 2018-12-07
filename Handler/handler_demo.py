@@ -11,4 +11,10 @@ spectrum_file = args.filename
 spectrum = Spectrum(spectrum_file)
 
 redshift = spectrum.redshift.z
-print(redshift)
+velocity = spectrum.redshift.velocity
+distance = spectrum.redshift.distance
+print(f"Redshift: {redshift}")
+print(f"Velocity (from redshift): {velocity}")
+print(f"Distance (from redshift): {distance}")
+
+print(spectrum.luminosity)

@@ -37,19 +37,15 @@ class Geometry(object):
 
 class Luminosity(object):
 
-	def __init__(self):
-
-		self.t1 = Table.read('spec-10000-57346-0007.fits',hdu=1)
-		self.distance = r.distance
-		self.flux = self.t1['flux']*3.631E-6*u.Jy
-
+	def __init__(self, flux, distance):
+		self.flux=flux
+		self.distance=distance
+	
+	@property
 	def luminosity(self):
-
-		flux = self.flux
-		g = Geometry(r.distance())
-		luminos = flux*g.area()
+		g = Geometry(self.distance)
+		luminos = self.flux*g.area()
 		luminos = luminos.decompose()
-		luminos = Column(luminos, "L")
 		return luminos
 
 
@@ -98,6 +94,11 @@ class Spectrum(object):
 		t = Table.read(self.filepath, hdu=2)
 		redshift = Redshift(t['Z'].data[0])
 		return redshift
+	
+	@property
+	def luminosity(self):
+		lum = Luminosity(self.flux, self.redshift.distance)
+		return lum.luminosity
 		
 	def display_headers(self, header_num):
 		t = Table.read(self.filepath, hdu=header_num)
@@ -203,4 +204,4 @@ spec = Spectrum(fpath)
 #spec.display_headers(1)
 #spec.display_info()
 
-spec.plot_spectrum()
+#spec.plot_spectrum()
