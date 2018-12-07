@@ -1,5 +1,5 @@
 from astropy.io import fits
-from astropy.table import Table
+from astropy.table import Table, Column
 from astropy import units as u
 from astropy import constants as const
 import os
@@ -23,6 +23,8 @@ class Redshift(object):
 		distance = distance.decompose()
 		distance = distance.to(u.kpc)
 		return distance
+
+#filename = 'spec-4055-55359-0001.fits'
 
 # hdu_info = fits.open("spec-10000-57346-0007.fits")
 # t1 = Table.read("spec-10000-57346-0007.fits", hdu=1)
@@ -48,16 +50,18 @@ class Geometry(object):
 
 class Luminosity(object):
 
-	def __init__(self):
+	def __init__(self,distance,filename):
 
-		self.t1 = Table.read('spec-10000-57346-0007.fits',hdu=1)
-		self.distance = r.distance
+		self.filename = filename
+		self.t1 = Table.read(self.filename,hdu=1)
+		self.distance = distance
 		self.flux = self.t1['flux']*3.631E-6*u.Jy
 
 	def luminosity(self):
 
+		distance = self.distance
 		flux = self.flux
-		g = Geometry(r.distance())
+		g = Geometry(distance)
 		luminos = flux*g.area()
 		luminos = luminos.decompose()
 		luminos = Column(luminos, "L")
@@ -130,8 +134,8 @@ class Spectrum(object):
 		if(show==1 or show==True):
 			plt.show()	
 	
-spec = Spectrum("spec-10000-57346-0007.fits")
-print(spec.redshift.distance)
+#spec = Spectrum(filename)
+#print(spec.redshift.distance)
 
 
 class SpectralLines(object):
@@ -180,7 +184,8 @@ class SpectralLines(object):
 				wavelengths.append(temp_w)
 				names.append(temp_n)
 			except IndexError:
-				print(f"No spectral line on file within five angstroms either side of {lams[i]} angstroms")
+				a=0
+				#print(f"No spectral line on file within five angstroms either side of {lams[i]} angstroms")
 		return wavelengths, names
 
 	def get_all_lines(self):
@@ -208,12 +213,12 @@ def make_spectrum_plot(fpath, plotlines='all'):
 		SpectralLines(fpath).plot_some_lines(ax, plotlines)
 	Spectrum(fpath).plot_spectrum(show=1)
 
-fpath = "spec-10000-57346-0007.fits"
-l = SpectralLines(fpath)
+#fpath = filename
+#l = SpectralLines(fpath)
 
 # spec = Spectrum("spec-10000-57346-0007.fits")
 #print(spec.ra)
 #spec.display_headers(1)
 #spec.display_info()
 
-make_spectrum_plot(fpath)
+#make_spectrum_plot(fpath)
