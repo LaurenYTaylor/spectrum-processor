@@ -14,7 +14,7 @@ object_type = spectrum.object_type
 redshift = spectrum.redshift.z
 velocity = spectrum.redshift.velocity
 distance = spectrum.redshift.distance
-print(f"\n--------------\nObject Type\n--------------\n{object_type}")
+print(f"\n-------------\nObject Type\n-------------\n{object_type}")
 print(f"\n--------\nRedshift\n--------\n{redshift}")
 print(f"\n------------------------\nVelocity (from redshift)\n------------------------\n{velocity}")
 print(f"\n------------------------\nDistance (from redshift)\n------------------------\n{distance}")
