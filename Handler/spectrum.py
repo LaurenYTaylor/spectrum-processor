@@ -137,6 +137,7 @@ class Spectrum(object):
 		plt.xlim(np.log10(self.min_lambda), np.log10(self.max_lambda))
 		plt.xlabel(r"Log $\lambda$") 
 		plt.ylabel(r"Flux $\frac{erg.\AA}{s.cm^2}$")
+		plt.title("Flux vs. Log Wavelength")
 		if not os.path.isdir("Plots"):
 			os.mkdir('Plots')
 		plt.savefig("Plots/"+self.filepath[:-5]+".png")
@@ -158,7 +159,8 @@ class SpectralLines(object):
 		t = Table.read(self.filepath, hdu=3)
 		names = []
 		for i, val in enumerate(t['LINENAME'].data):
-			names.append(val.decode("utf-8"))
+			#names.append(val.decode("utf-8"))
+			names.append(val)
 		return names
 
 	@property
